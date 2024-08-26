@@ -1,0 +1,34 @@
+closeall;
+load("reverse-threestepindex - copy - Copy.lsm");
+switchtolayout;
+
+Imin = 0.01;
+Imax = 0.5;
+lc = 1550e-9; # center wavelength
+w_center = (c/lc)*2*pi; 
+
+nt = 10000;
+t = matrix(nt);
+amp = matrix(nt);
+phase = matrix(nt);
+
+t = linspace(0,nt*1e-15,nt);
+#I = Imax*2*exp(-(t-1000e-15)^2/(2*(23000e-15)^2));
+#I = linspace(Imin,Imax,nt);
+phase = -w_center*t;
+
+
+I = linspace(Imax,Imin,nt);
+
+amp =  sqrt(sqrt(mu0/eps0)*I*10^14/(0.5*1.97));
+
+setsourcesignal("custom_source",t,amp,phase,c/lc,0);
+plot(t,amp,"t","amplitude");
+
+fname = "reverse-threestepindex - copy - Copy.lsm";
+save(fname);
+addjob(fname);  
+
+
+
+runjobs;
